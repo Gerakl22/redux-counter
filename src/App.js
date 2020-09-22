@@ -3,6 +3,10 @@ import React from "react";
 import { createStore } from "redux";
 import { Provider, connect } from "react-redux";
 
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+
+import { Menu } from "../src/components/Menu";
+
 const inc = () => ({
   type: "increment",
 });
@@ -14,7 +18,7 @@ const dec = () => ({
 const change = (changeValue) => ({
   type: "change",
   payload: {
-    changeValue
+    changeValue,
   },
 });
 
@@ -91,7 +95,20 @@ const ConnectedCounter = connect(mapStateToProps, mapDispatchToProps)(Counter);
 
 const App = () => (
   <Provider store={store}>
-    <ConnectedCounter />
+    <BrowserRouter>
+      <Menu />
+      <Switch>
+        <Route exact path="/">
+          <Redirect to="/list-counters"></Redirect>
+        </Route>
+        <Route path="/list-counters">
+          <ConnectedCounter />
+        </Route>
+        <Route path="/add-counter"></Route>
+        <Route path="/edit-counter"></Route>
+        <Route>Not found</Route>
+      </Switch>
+    </BrowserRouter>
   </Provider>
 );
 
