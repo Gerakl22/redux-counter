@@ -11,7 +11,6 @@ const dec = () => ({
   type: "decrement",
 });
 
-
 const change = (changeValue) => ({
   type: "change",
   changeValue,
@@ -20,8 +19,6 @@ const change = (changeValue) => ({
 const calculate = () => ({
   type: "calculate",
 });
-
-const initialState = 0;
 
 function reducer(
   state = {
@@ -55,17 +52,24 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-const Counter = ({ counter, changeValue, dispatch }) => (
+const Counter = ({
+  counter,
+  changeValue,
+  onCalculateClick,
+  onChangeValueChange,
+  onIncrementClick,
+  onDecrementClick,
+}) => (
   <div>
-    <button onClick={() => dispatch(dec())}>-</button>
+    <button onClick={onDecrementClick}>-</button>
     {counter}
     <input
       type="number"
       value={changeValue}
-      onChange={(e) => dispatch(change(e.target.valueAsNumber))}
+      onChange={(e) => onChangeValueChange(e.target.valueAsNumber)}
     />
-    <button onClick={() => dispatch(calculate())}>Change</button>
-    <button onClick={() => dispatch(inc())}>+</button>
+    <button onClick={onCalculateClick}>Change</button>
+    <button onClick={onIncrementClick}>+</button>
   </div>
 );
 
@@ -73,7 +77,13 @@ const mapStateToProps = ({ counter, changeValue }) => ({
   counter,
   changeValue,
 });
-const mapDispatchToProps = (dispatch) => ({ dispatch });
+
+const mapDispatchToProps = (dispatch) => ({
+  onIncrementClick: () => dispatch(inc()),
+  onDecrementClick: () => dispatch(dec()),
+  onCalculateClick: () => dispatch(calculate()),
+  onChangeValueChange: (changeValue) => dispatch(change(changeValue)),
+});
 
 const ConnectedCounter = connect(mapStateToProps, mapDispatchToProps)(Counter);
 
