@@ -13,7 +13,9 @@ const dec = () => ({
 
 const change = (changeValue) => ({
   type: "change",
-  changeValue,
+  payload: {
+    changeValue
+  },
 });
 
 const calculate = () => ({
@@ -39,7 +41,7 @@ function reducer(
     }
 
     case "change": {
-      return { ...state, changeValue: action.changeValue };
+      return { ...state, changeValue: action.payload.changeValue };
     }
 
     default:
